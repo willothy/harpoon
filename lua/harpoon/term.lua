@@ -6,15 +6,10 @@ local M = {}
 local terminals = {}
 
 local function create_terminal(create_with)
-    if not create_with then
-        create_with = ":terminal"
-    end
-    log.trace("term: _create_terminal(): Init:", create_with)
-    local current_id = vim.api.nvim_get_current_buf()
-
-    vim.cmd(create_with)
-    local buf_id = vim.api.nvim_get_current_buf()
-    local term_id = vim.b.terminal_job_id
+    local term = require("toggleterm.terminal").Terminal:new()
+    term:spawn()
+    local buf_id = term.bufnr
+    local term_id = vim.b[buf_id].terminal_job_id
 
     if term_id == nil then
         log.error("_create_terminal(): term_id is nil")
@@ -25,9 +20,6 @@ local function create_terminal(create_with)
     -- Make sure the term buffer has "hidden" set so it doesn't get thrown
     -- away and cause an error
     vim.api.nvim_buf_set_option(buf_id, "bufhidden", "hide")
-
-    -- Resets the buffer back to the old one
-    vim.api.nvim_set_current_buf(current_id)
     return buf_id, term_id
 end
 
