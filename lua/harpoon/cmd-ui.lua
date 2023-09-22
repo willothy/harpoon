@@ -116,6 +116,13 @@ function M.toggle_quick_menu()
         "<Cmd>lua require('harpoon.cmd-ui').select_menu_item()<CR>",
         {}
     )
+    vim.api.nvim_buf_set_keymap(
+        Harpoon_bufh,
+        "n",
+        "<Tab>",
+        "<Cmd>lua require('harpoon.ui').toggle_quick_menu()<CR>",
+        {}
+    )
     vim.cmd(
         string.format(
             "autocmd BufWriteCmd <buffer=%s> lua require('harpoon.cmd-ui').on_menu_save()",
