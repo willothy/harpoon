@@ -160,9 +160,12 @@ function M.toggle_quick_menu()
             Harpoon_bufh
         )
     )
-    vim.cmd(
-        "autocmd BufLeave <buffer> ++nested ++once silent lua require('harpoon.ui').toggle_quick_menu()"
-    )
+    vim.api.nvim_create_autocmd("BufLeave", {
+        buffer = Harpoon_bufh,
+        callback = function()
+            close_menu()
+        end,
+    })
 end
 
 function M.select_menu_item()

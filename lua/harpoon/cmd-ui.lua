@@ -144,6 +144,12 @@ function M.toggle_quick_menu()
             Harpoon_cmd_bufh
         )
     )
+    vim.api.nvim_create_autocmd("BufLeave", {
+        buffer = Harpoon_cmd_bufh,
+        callback = function()
+            close_menu()
+        end,
+    })
 end
 
 function M.select_menu_item()
