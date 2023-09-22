@@ -32,20 +32,21 @@ local function create_window()
         or { "─", "│", "─", "│", "╭", "╮", "╯", "╰" }
     local bufnr = vim.api.nvim_create_buf(false, false)
 
-    local Harpoon_cmd_win_id, win = popup.create(bufnr, {
+    local Harpoon_cmd_win_id = vim.api.nvim_open_win(bufnr, true, {
+        relative = "editor",
         title = "Harpoon Commands",
-        highlight = "HarpoonWindow",
-        line = math.floor(((vim.o.lines - height) / 2) - 1),
+        title_pos = "center",
+        row = math.floor(((vim.o.lines - height) / 2) - 1),
         col = math.floor((vim.o.columns - width) / 2),
-        minwidth = width,
-        minheight = height,
-        borderchars = borderchars,
+        width = width,
+        height = height,
+        border = borderchars,
     })
 
     vim.api.nvim_win_set_option(
-        win.border.win_id,
+        Harpoon_cmd_win_id,
         "winhl",
-        "Normal:HarpoonBorder"
+        "Normal:HarpoonWindow,FloatBorder:HarpoonBorder"
     )
 
     return {
@@ -117,7 +118,7 @@ function M.toggle_quick_menu()
         {}
     )
     vim.api.nvim_buf_set_keymap(
-        Harpoon_bufh,
+        Harpoon_cmd_bufh,
         "n",
         "<Tab>",
         "<Cmd>lua require('harpoon.ui').toggle_quick_menu()<CR>",
