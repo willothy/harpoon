@@ -13,7 +13,7 @@ local M = {}
 local the_primeagen_harpoon =
     vim.api.nvim_create_augroup("THE_PRIMEAGEN_HARPOON", { clear = true })
 
-vim.api.nvim_create_autocmd({ "BufLeave, VimLeave" }, {
+vim.api.nvim_create_autocmd({ "BufLeave", "VimLeave" }, {
     callback = function()
         require("harpoon.mark").store_offset()
     end,
