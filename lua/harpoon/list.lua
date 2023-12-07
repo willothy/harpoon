@@ -54,11 +54,11 @@ function HarpoonList:append(item)
     local index = index_of(self.items, item, self.config)
     Logger:log("HarpoonList:append", { item = item, index = index })
     if index == -1 then
+        table.insert(self.items, item)
         Listeners.listeners:emit(
             Listeners.event_names.ADD,
-            { list = self, item = item, idx = #self.items + 1 }
+            { list = self, item = item, idx = #self.items }
         )
-        table.insert(self.items, item)
     end
 
     return self
@@ -70,11 +70,11 @@ function HarpoonList:prepend(item)
     local index = index_of(self.items, item, self.config)
     Logger:log("HarpoonList:prepend", { item = item, index = index })
     if index == -1 then
+        table.insert(self.items, 1, item)
         Listeners.listeners:emit(
             Listeners.event_names.ADD,
             { list = self, item = item, idx = 1 }
         )
-        table.insert(self.items, 1, item)
     end
 
     return self
@@ -90,11 +90,9 @@ function HarpoonList:remove(item)
                 { list = self, item = item, idx = i }
             )
             Logger:log("HarpoonList:remove", { item = item, index = i })
-            table.remove(self.items, i)
-            break
+            return table.remove(self.items, i)
         end
     end
-    return self
 end
 
 ---@return HarpoonList
@@ -103,7 +101,10 @@ function HarpoonList:removeAt(index)
         Listeners.event_names.REMOVE,
         { list = self, item = self.items[index], idx = index }
     )
-    Logger:log("HarpoonList:removeAt", { item = self.items[index], index = index })
+    Logger:log(
+        "HarpoonList:removeAt",
+        { item = self.items[index], index = index }
+    )
     table.remove(self.items, index)
     return self
 end
