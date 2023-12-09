@@ -51,9 +51,32 @@ function HarpoonLog:log(...)
 
     table.insert(self.lines, table.concat(lines, " "))
 
-    while #self.lines > self.max_lines  do
-        table.remove(self.lines, 1)
+    local to_write = {}
+    while #self.lines > self.max_lines do
+        table.insert(to_write, table.remove(self.lines, 1))
     end
+    if require("harpoon").config.settings.debug and #to_write > 0 then
+        local file = io.open(vim.fn.stdpath("data") .. "/harpoon.log", "a")
+        if not file then
+            return
+        end
+        for _, line in ipairs(to_write) do
+            file:write(line .. "\n")
+        end
+        file:close()
+    end
+end
+
+function HarpoonLog:flush()
+    local file = io.open(vim.fn.stdpath("data") .. "/harpoon.log", "a")
+    if not file then
+        return
+    end
+    for _, line in ipairs(self.lines) do
+        file:write(line .. "\n")
+    end
+    file:close()
+    self.lines = {}
 end
 
 function HarpoonLog:clear()
