@@ -74,18 +74,16 @@ function M.setup_autocmds_and_keymaps(bufnr)
         {}
     )
 
-    -- TODO: Do we want this?  is this a thing?
-    -- its odd... why save on text change? shouldn't we wait until close / w / esc?
-    --[[
-    if global_config.save_on_change then
-        vim.cmd(
-            string.format(
-                "autocmd TextChanged,TextChangedI <buffer=%s> lua require('harpoon').ui:save()",
-                bufnr
-            )
-        )
+    if require("harpoon").config.settings.save_on_change then
+        vim.api.nvim_create_autocmd("TextChanged", {
+            buffer = bufnr,
+            group = HarpoonGroup,
+            callback = function()
+                require("harpoon").ui:save()
+            end,
+        })
     end
-    --]]
+
     vim.cmd(
         string.format(
             "autocmd BufModifiedSet <buffer=%s> set nomodified",

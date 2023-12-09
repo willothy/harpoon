@@ -27,6 +27,7 @@ M.DEFAULT_LIST = DEFAULT_LIST
 ---@class HarpoonSettings
 ---@field border_chars string[] defaults to { "─", "│", "─", "│", "╭", "╮", "╯", "╰" }
 ---@field save_on_toggle boolean defaults to true
+---@field save_on_change boolean defaults to false
 ---@field ui_fallback_width number defaults 69, nice
 ---@field ui_width_ratio number defaults to 0.62569
 ---@field key (fun(): string)
@@ -56,6 +57,7 @@ function M.get_default_config()
 
         settings = {
             save_on_toggle = false,
+            save_on_change = false,
             border_chars = {
                 "─",
                 "│",
