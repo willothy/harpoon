@@ -25,7 +25,7 @@ M.DEFAULT_LIST = DEFAULT_LIST
 ---@field get_root_dir? fun(): string
 
 ---@class HarpoonSettings
----@field save_on_toggle boolean defaults to true
+---@field save_on_toggle boolean defaults to false
 ---@field sync_on_ui_close? boolean
 ---@field key (fun(): string)
 
