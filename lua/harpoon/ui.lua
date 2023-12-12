@@ -20,7 +20,6 @@ end
 ---@field bufnr number
 ---@field settings HarpoonSettings
 ---@field active_list HarpoonList
----@field private updater function
 local HarpoonUI = {}
 
 ---@param list HarpoonList
@@ -34,16 +33,12 @@ HarpoonUI.__index = HarpoonUI
 ---@param settings HarpoonSettings
 ---@return HarpoonUI
 function HarpoonUI:new(settings)
-    local o = setmetatable({
+    return setmetatable({
         win_id = nil,
         bufnr = nil,
         active_list = nil,
         settings = settings,
     }, self)
-    o.updater = vim.schedule_wrap(function()
-        o:update_contents()
-    end)
-    return o
 end
 
 function HarpoonUI:close_menu()
@@ -61,8 +56,6 @@ function HarpoonUI:close_menu()
             bufnr = self.bufnr,
         }
     )
-
-    Listeners.listeners:remove_listener(self.updater)
 
     if self.bufnr ~= nil and vim.api.nvim_buf_is_valid(self.bufnr) then
         vim.api.nvim_buf_delete(self.bufnr, { force = true })
@@ -127,8 +120,6 @@ function HarpoonUI:_create_window(toggle_opts)
         win_id = win_id,
         bufnr = bufnr,
     })
-
-    Listeners.listeners:add_listener(self.updater)
 
     return win_id, bufnr
 end
