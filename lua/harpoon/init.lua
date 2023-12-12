@@ -55,6 +55,18 @@ function Harpoon:list(name)
             self.data.seen[key] = {}
         end
         self.data.seen[key][name] = true
+
+        if
+            existing_list.config.automated == true
+            and existing_list.config.prepopulate
+        then
+            existing_list:clear()
+            local items = existing_list.config.prepopulate() or {}
+            for _, item in ipairs(items) do
+                existing_list:append(item)
+            end
+        end
+
         return existing_list
     end
 
