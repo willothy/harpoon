@@ -116,11 +116,6 @@ function HarpoonUI:_create_window(toggle_opts)
         win = win_id,
     })
 
-    Listeners.listeners:emit(Listeners.event_names.UI_CREATE, {
-        win_id = win_id,
-        bufnr = bufnr,
-    })
-
     return win_id, bufnr
 end
 
@@ -151,6 +146,11 @@ function HarpoonUI:toggle_quick_menu(list, opts)
     self.win_id = win_id
     self.bufnr = bufnr
     self.active_list = list
+
+    Listeners.listeners:emit(Listeners.event_names.UI_CREATE, {
+        win_id = win_id,
+        bufnr = bufnr,
+    })
 
     self:update_contents()
 end
