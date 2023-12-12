@@ -4,6 +4,8 @@ local Listeners = require("harpoon.listeners")
 
 ---@class HarpoonToggleOptions
 ---@field border? any this value is directly passed to nvim_open_win
+---@field title_pos? any this value is directly passed to nvim_open_win
+---@field footer_pos? any same as above, but only available on nvim 0.10
 ---@field ui_fallback_width? number
 ---@field ui_width_ratio? number
 
@@ -87,6 +89,13 @@ function HarpoonUI:_create_window(toggle_opts)
         width = math.floor(win[1].width * toggle_opts.ui_width_ratio)
     end
 
+    local footer, footer_pos
+    -- enable footer for nightly users
+    if vim.version ~= nil and vim.version().minor >= 10 then
+        footer = self.active_list.name
+        footer_pos = toggle_opts.footer_pos or "center"
+    end
+
     local height = 8
     local bufnr = vim.api.nvim_create_buf(false, true)
     local win_id = vim.api.nvim_open_win(bufnr, true, {
@@ -98,6 +107,9 @@ function HarpoonUI:_create_window(toggle_opts)
         height = height,
         style = "minimal",
         border = toggle_opts.border or "single",
+        title_pos = toggle_opts.title_pos or "center",
+        footer_pos = footer_pos,
+        footer = footer,
     })
 
     if win_id == 0 then
@@ -138,11 +150,13 @@ function HarpoonUI:toggle_quick_menu(list, opts)
     end
 
     Logger:log("ui#toggle_quick_menu#opening", list and list.name)
+
+    self.active_list = list
+
     local win_id, bufnr = self:_create_window(opts)
 
     self.win_id = win_id
     self.bufnr = bufnr
-    self.active_list = list
 
     local contents = self.active_list:display()
     vim.api.nvim_buf_set_lines(self.bufnr, 0, -1, false, contents)
