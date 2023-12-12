@@ -93,7 +93,10 @@ function HarpoonList:remove(item)
                 { list = self, item = item, idx = i }
             )
             Logger:log("HarpoonList:remove", { item = item, index = i })
-            table.remove(self.items, i)
+            local removed = table.remove(self.items, i)
+            if self.config.remove then
+                self.config.remove(removed, self)
+            end
             break
         end
     end
@@ -111,7 +114,10 @@ function HarpoonList:removeAt(index)
             Listeners.event_names.REMOVE,
             { list = self, item = self.items[index], idx = index }
         )
-        table.remove(self.items, index)
+        local item = table.remove(self.items, index)
+        if self.config.remove then
+            self.config.remove(item, self)
+        end
     end
     return self
 end
@@ -143,6 +149,9 @@ function HarpoonList:resolve_displayed(displayed)
                 Listeners.event_names.REMOVE,
                 { list = self, item = self.items[i], idx = i }
             )
+            if self.config.remove then
+                self.config.remove(self.items[i], self)
+            end
         end
     end
 
