@@ -50,5 +50,6 @@ return {
         UI_CREATE = "UI_CREATE",
         SETUP_CALLED = "SETUP_CALLED",
         LIST_CREATED = "LIST_CREATED",
+        LIST_READ = "LIST_READ",
     },
 }

@@ -55,6 +55,7 @@ function Harpoon:list(name)
             self.data.seen[key] = {}
         end
         self.data.seen[key][name] = true
+        self._extensions:emit(Extensions.event_names.LIST_READ, existing_list)
         return existing_list
     end
 
@@ -63,6 +64,7 @@ function Harpoon:list(name)
 
     local list = List.decode(list_config, name, data)
     self._extensions:emit(Extensions.event_names.LIST_CREATED, list)
+    self._extensions:emit(Extensions.event_names.LIST_READ, list)
     lists[name] = list
 
     return list
