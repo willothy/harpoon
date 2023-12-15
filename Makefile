@@ -8,6 +8,6 @@ lint:
 
 test:
 	echo "===> Testing"
-	nvim --headless -c "PlenaryBustedDirectory lua/harpoon/test"
+	nvim --headless --clean -u "lua/harpoon/test/minimal_init.lua" -c "PlenaryBustedDirectory lua/harpoon/test"
 
 pr-ready: fmt lint test
