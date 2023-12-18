@@ -76,10 +76,10 @@ function M.setup_autocmds_and_keymaps(bufnr)
     vim.api.nvim_create_autocmd({ "BufLeave" }, {
         group = HarpoonGroup,
         buffer = bufnr,
-        callback = vim.schedule_wrap(function()
+        callback = function()
             require("harpoon").logger:log("toggle by BufLeave")
             require("harpoon").ui:toggle_quick_menu()
-        end),
+        end,
     })
 end
 
