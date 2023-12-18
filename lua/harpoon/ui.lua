@@ -180,9 +180,8 @@ function HarpoonUI:select_menu_item(options)
         options
     )
 
-    list = self.active_list
+    self.active_list:select(idx, options)
     self:close_menu()
-    list:select(idx, options)
 end
 
 function HarpoonUI:save()
